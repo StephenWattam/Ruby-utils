@@ -408,61 +408,63 @@ class CLIProgressBar < CLIBar
 end
 
 
-##test
+#test
+if __FILE__ == $0 then
+# spinner, one motion per update 
+x = CLISpinBar.new(true)
 
-## spinner, one motion per update 
-#x = CLISpinBar.new(true)
+# non-threaded operation
+300.times{|n|
+  x.update
+  x.set_status("#{n}")
+  x.render()
+  sleep 0.01
+}
 
-## non-threaded operation
-#300.times{|n|
-  #x.update
-  #x.set_status("#{n}")
-  #x.render()
-  #sleep 0.01
-#}
+# test of threaded update
+puts "non-blocking updates"
+sleep 1
+x.render_thread(0.01)
 
-## test of threaded update
-#puts "non-blocking updates"
-#sleep 1
-#x.render_thread(0.01)
-
-## allow the thread to run
-#sleep 10
-#x.stop_thread
-
-
+# allow the thread to run
+sleep 10
+x.stop_thread
 
 
-#puts "Progress bar."
-#sleep 1
-
-#y = CLIProgressBar.new(1000, true, true)
-#1001.times{|n|
-  #y.update_abs(n)
-  #y.set_status(n.to_s)
-  #y.render
-  ##("#{n} / 1000")
-  #sleep 0.001
-#}
-
-#puts "non-blocking"
-#sleep 1
-
-#y.set_value_callback(lambda{ return rand(100) })
-#y.set_status_callback(lambda{ return rand(100).to_s })
-#y.set_use_callbacks(true)
-#y.render_thread(0.1)
-
-#sleep 5 
-#y.set_spinner(false)
-#y.set_use_callbacks(false)
 
 
-#101.times{|n|
-  #y.set_status("!CB: #{n*10}")
-  #y.update_abs(n*10)
-  #sleep 0.1
-#}
+puts "Progress bar."
+sleep 1
 
-#sleep 10 
-#y.stop_thread
+y = CLIProgressBar.new(1000, true, true)
+1001.times{|n|
+  y.update_abs(n)
+  y.set_status(n.to_s)
+  y.render
+  #("#{n} / 1000")
+  sleep 0.001
+}
+
+puts "non-blocking"
+sleep 1
+
+y.set_value_callback(lambda{ return rand(100) })
+y.set_status_callback(lambda{ return rand(100).to_s })
+y.set_use_callbacks(true)
+y.render_thread(0.1)
+
+sleep 5 
+y.set_spinner(false)
+y.set_use_callbacks(false)
+
+
+101.times{|n|
+  y.set_status("!CB: #{n*10}")
+  y.update_abs(n*10)
+  sleep 0.1
+}
+
+sleep 10 
+y.stop_thread
+
+end
