@@ -9,12 +9,9 @@ class String
 
 
 
-
-  def demerau_levenshtein_distance(b)
+  def demerau_levenshtein_distance(a, b)
     # Many thanks to http://davefancher.com/tag/damerau-levenshtein-distance/
     # whence this algorithm.
-
-    a = self
 
     # 2D array axb
     mx = []
@@ -23,9 +20,10 @@ class String
     (a.length + 1).times do |i|
       (b.length + 1).times do |j|
 
-        if [i, j].include?(0)
-          # Fill first row/col with 0s
-          mx[i][j] = 0
+        if i == 0
+          mx[i][j] = j
+        elsif j == 0
+          mx[i][j] = i
         else
           # Assign current chars for easier use
           ac, bc = a[i - 1], b[j - 1]
@@ -55,7 +53,6 @@ class String
     return mx[a.length][b.length]
 
   end
-
 
 end
 
